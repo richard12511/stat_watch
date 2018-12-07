@@ -1,13 +1,13 @@
 defmodule StatWatch do
 
-  def column_names, do: ~w(DateTime Subscribers Videos Views) |> Enum.join(",")
+  def column_names, do: ~w(DateTime Subscribers Videos Views Alexa) |> Enum.join(",")
 
   def update_stats do
-    get_stats |> save_csv
+    get_stats() |> save_csv
   end
 
   def get_stats do
-    {:ok, %{body: body}} = stats_url |> HTTPoison.get
+    {:ok, %{body: body}} = stats_url() |> HTTPoison.get
     now = %{DateTime.utc_now | microsecond: {0, 0}} |> DateTime.to_string
 
     %{items: [%{statistics: stats} | _]} = Poison.decode!(body, keys: :atoms)

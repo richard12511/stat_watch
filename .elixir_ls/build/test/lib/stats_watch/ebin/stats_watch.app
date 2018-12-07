@@ -1,0 +1,10 @@
+{application,stats_watch,
+             [{applications,[kernel,stdlib,elixir,logger,poison,sweet_xml,
+                             httpoison]},
+              {description,"stats_watch"},
+              {modules,['Elixir.StatWatch','Elixir.StatWatch.Application',
+                        'Elixir.StatWatch.Scheduler']},
+              {registered,[]},
+              {vsn,"0.1.0"},
+              {mod,{'Elixir.StatWatch.Application',[]}},
+              {extra_applications,[logger]}]}.

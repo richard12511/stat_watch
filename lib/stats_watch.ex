@@ -1,6 +1,10 @@
-defmodule StatsWatch do
+defmodule StatWatch do
 
   def column_names, do: ~w(DateTime Subscribers Videos Views) |> Enum.join(",")
+
+  def update_stats do
+    get_stats |> save_csv
+  end
 
   def get_stats do
     {:ok, %{body: body}} = stats_url |> HTTPoison.get
@@ -8,6 +12,14 @@ defmodule StatsWatch do
 
     %{items: [%{statistics: stats} | _]} = Poison.decode!(body, keys: :atoms)
     [now, stats.subscriberCount, stats.videoCount, stats.viewCount] |> Enum.join(", ")
+  end
+
+  def save_csv(row_of_stats) do
+    filename = "stats.csv"
+    unless File.exists?(filename) do
+      File.write!(filename, column_names() <> "\n")
+    end
+    File.write!(filename, row_of_stats <> "\n", [:append])
   end
 
   defp stats_url do
